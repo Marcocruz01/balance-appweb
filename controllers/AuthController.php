@@ -8,6 +8,7 @@ use Model\Usuario;
 
 class AuthController {
 
+    
     // Función que valida credenciales, autentica al usuario y crea la sesión.
     public static function login(Router $router) {
         // Instanciar el modelo de usuario 
@@ -16,7 +17,7 @@ class AuthController {
         if( $_SERVER['REQUEST_METHOD'] === 'POST') {
             // Procesar los datos enviados.
             $usuario->sincronizar($_POST); // Sincronizamos los datos del formulario
-            $alertas = $usuario->validarSesion(); // Validacion de la sesión en el formulario
+            $alertas = $usuario->validar_sesion(); // Validacion de la sesión en el formulario
             if(empty($alertas)) {
                 $usuario = Usuario::where('email', $usuario->email); // Buscamos al usuario con las credenciales ingresadas
                 if(!$usuario || !$usuario->confirmado) {
@@ -28,7 +29,12 @@ class AuthController {
                         $_SESSION['nombre'] = $usuario->nombre;
                         $_SESSION['apellido'] = $usuario->apellido;
                         $_SESSION['email'] = $usuario->email;
+                        $_SESSION['saldo'] = $usuario->saldo;
+                        $_SESSION['plan'] = $usuario->plan;
+                        $_SESSION['imagen'] = $usuario->imagen;
                         $_SESSION['login'] = true;
+                        // \debuguear($_SESSION);
+                        header('Location: /'); // Redirigir al usuario a la página inicial de la app
                         
                     } else {
                         Usuario::setAlerta('error', 'No se pudo iniciar sesión; verifica tus datos.'); // Mostrar la alerta al usuario
@@ -50,7 +56,21 @@ class AuthController {
     // Función que redirige al usuario de vuelta al formulario de login.
     public static function logout() {
         // Cerrar sesión y redirigir.
-
+        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Procesar los datos enviados.
+            session_start(); 
+            $_SESSION = []; // // Vaciar variables de sesión
+            if (ini_get("session.use_cookies")) { // Destruir la cookie de sesión
+                $params = session_get_cookie_params();
+                setcookie(session_name(), '', time() - 42000,
+                    $params["path"], $params["domain"],
+                    $params["secure"], $params["httponly"]
+                );
+            }
+            session_destroy(); // Destruir la sesión
+            header('Location: /login'); // Redirigir
+            exit;
+        }
     }
 
     // Función que valida los datos, crea la cuenta y registra al usuario en la BD.
@@ -61,7 +81,7 @@ class AuthController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Procesar los datos enviados.
             $usuario->sincronizar($_POST); // Sincronizamos los datos del formulario
-            $alertas = $usuario->validacionCuentasNuevas(); // Validacion de los campos del formulario
+            $alertas = $usuario->validar_cuenta_nueva(); // Validacion de los campos del formulario
             if(empty($alertas)) { // Si ya no hay alertas y todos los campos llenos hacer otra comprobación
                 $existeUsuario = Usuario::where('email', $usuario->email); // Validar que no exista el usuario para poder registrarlo
                 if($existeUsuario) {
@@ -73,7 +93,7 @@ class AuthController {
                     $usuario->token(); // Generamos un token unico para la creación de la cuenta
                     $resultado = $usuario->guardar(); // Creamos el nuevo usuario y lo registramos en la DB
                     $email = new Email($usuario->email, $usuario->nombre, $usuario->token); // Creamos una nueva instancia de Email y pasarle parametros
-                    $email->enviarConfirmacion(); // Enviamos el correo eléctronico para confirmar la cuenta
+                    $email->enviar_confirmacion(); // Enviamos el correo eléctronico para confirmar la cuenta
                     if($resultado) {
                         header('Location: /mensaje'); // Redirijimos a la vista mensaje
                     }
@@ -99,7 +119,7 @@ class AuthController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Procesar los datos enviados.
             $usuario->sincronizar($_POST); // Sincronizamos los datos del formulario
-            $alertas = $usuario->validarEmail(); // Validacion del email / correo eléctronico
+            $alertas = $usuario->validar_email(); // Validacion del email / correo eléctronico
             if(empty($alertas)) { // Si ya no hay alertas y todos los campos llenos hacer otra comprobación 
                 $usuario = Usuario::where('email', $usuario->email); // Buscar al usuario con el email introducido en el formulario 
                 if($usuario && $usuario->confirmado) {
@@ -107,7 +127,7 @@ class AuthController {
                     unset($usuario->password_repeat); // Eliminamos el password repeat
                     $resultado = $usuario->guardar(); // Creamos el nuevo usuario y lo registramos en la DB
                     $email = new Email($usuario->email, $usuario->nombre, $usuario->token); // Creamos una nueva instancia de Email y pasarle parametros
-                    $email->enviarInstrucciones(); // Enviamos el correo eléctronico para confirmar la cuenta
+                    $email->enviar_instrucciones(); // Enviamos el correo eléctronico para confirmar la cuenta
                     if($resultado) {
                         Usuario::setAlerta('success', 'Se ha enviado la petición; revisa tu bandeja de entrada para seguir las instrucciones y restablecer tu contraseña.');
                     }
@@ -140,7 +160,7 @@ class AuthController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Procesar los datos enviados.
             $usuario->sincronizar($_POST); // Sincronizamos los datos del formulario
-            $usuario->validarCredenciales(); // Hacemos la validación de las credenciales del usuario 
+            $usuario->validar_credenciales(); // Hacemos la validación de las credenciales del usuario 
             $alertas = Usuario::getAlertas();
             if(empty($alertas)) {
                 $usuario->hashPassword(); // Hasheamos el password del usuario

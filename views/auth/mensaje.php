@@ -1,9 +1,9 @@
 <div class="w-full h-screen flex items-center justify-center">
     <!-- Sombra -->
-    <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-60">
-        <div class="flex flex-col w-full max-w-md md:max-w-xl shadow-lg rounded-lg overflow-hidden">
+    <div class="fixed inset-0 flex items-center justify-center bg-gray-900 dark:bg-neutral-900 bg-opacity-60">
+        <div class="flex flex-col w-full max-w-md md:max-w-xl shadow-lg rounded-md overflow-hidden">
             <!-- Modal -->
-            <div class="bg-white flex gap-4 items-start p-6 text-start">
+            <div class="bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 flex gap-4 items-start p-6 text-start">
                 <!-- Icono -->
                 <div class="flex items-center justify-center mb-4">
                     <div class="bg-green-100 text-green-600 rounded-full p-3">
@@ -15,9 +15,9 @@
                 <!-- Contenido de información -->
                 <div class="flex flex-col gap-2">
                     <!-- Título -->
-                    <h2 class="text-lg font-semibold text-gray-800">Cuenta creada con éxito</h2>
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-neutral-200">Cuenta creada con éxito</h2>
                     <!-- Mensaje -->
-                    <p class="text-gray-500 font-light leading-tight">
+                    <p class="text-gray-500 font-light leading-tight dark:text-neutral-400">
                         Tu cuenta ha sido creada correctamente. 
                         Hemos enviado un correo de confirmación a tu dirección registrada. 
                         <br><br>
@@ -26,10 +26,10 @@
                 </div>
             </div>
             <!-- Footer -->
-            <div class="bg-gray-50 w-full p-4">
+            <div class="bg-gray-50 dark:bg-neutral-700 w-full p-4">
                 <div class="flex items-center justify-end gap-3">
                     <a href="/login" class="block w-auto justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300">Cancelar</a>
-                    <a href="/login" class="block w-auto justify-center rounded-md bg-zinc-900 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-zinc-800">Aceptar</a>
+                    <a href="/login" class="block w-auto justify-center rounded-md bg-zinc-950 dark:bg-indigo-700 dark:hover:bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-zinc-800">Aceptar</a>
                 </div>
             </div>
         </div>

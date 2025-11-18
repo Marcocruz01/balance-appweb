@@ -17,7 +17,7 @@ class Email {
     }
 
     // Método para enviar correo de confirmación de cuenta
-    public function enviarConfirmacion() {
+    public function enviar_confirmacion() {
         // Crear una nueva instancia de PHPMailer
         $mail = new PHPMailer();
         $mail->isSMTP(); // Usar protocolo SMTP
@@ -51,7 +51,7 @@ class Email {
     }
 
     // Método para enviar correo de instrucciones
-    public function enviarInstrucciones() {
+    public function enviar_instrucciones() {
          // Crear una nueva instancia de PHPMailer
         $mail = new PHPMailer();
         $mail->isSMTP(); // Usar protocolo SMTP

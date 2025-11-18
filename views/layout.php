@@ -18,9 +18,25 @@
     <link rel="stylesheet" href="/dist/css/output.css">
     <link rel="stylesheet" href="/dist/css/index.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        (function() {
+            const temaGuardado = localStorage.getItem("tema-seleccionado");
+            if (temaGuardado === "dark") {
+            document.documentElement.classList.add("dark");
+            } else if (temaGuardado === "light") {
+            document.documentElement.classList.remove("dark");
+            } else {
+            // Default: según el sistema
+            if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                document.documentElement.classList.add("dark");
+            } else {
+                document.documentElement.classList.remove("dark");
+            }
+            }
+        })();
+    </script>
 </head>
-<body>
-
+<body class="bg-gray-50 dark:bg-neutral-950">
     <?php echo $contenido; ?>
     <?php echo $script ?? ''; ?>
 </body>

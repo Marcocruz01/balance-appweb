@@ -10,3 +10,55 @@ body {
     max-width: 80rem;
     margin: 0 auto;
 }
+
+/* Para navegadores WebKit (Chrome, Edge, Safari, Opera) */
+.scrollbar::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+/* Scrollbar para Firefox */
+.scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #000000 transparent;
+}
+
+
+.scrollbar::-webkit-scrollbar-track {
+  background: transparent; /* siempre transparente */
+}
+
+/* Default (por si no hay prefers-color-scheme) */
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #000000; /* negro */
+  border-radius: 9999px;
+}
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #1a1a1a; /* negro un poco más claro al hover */
+}
+
+/* 🌞 Modo claro */
+@media (prefers-color-scheme: light) {
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #000000; /* negro */
+  }
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #1a1a1a; /* hover más suave */
+  }
+  .scrollbar {
+    scrollbar-color: #000000 transparent;
+  }
+}
+
+/* 🌙 Modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #3d3d3d; /* gris (slate-500) */
+  }
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #3d3d3d; /* gris más oscuro (slate-600/700) */
+  }
+  .scrollbar {
+    scrollbar-color: #3d3d3d transparent;
+  }
+}

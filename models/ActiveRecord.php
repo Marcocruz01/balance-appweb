@@ -79,9 +79,12 @@ class ActiveRecord {
 
         $resultado = self::$db->query($query);
 
+        // Asignamos el id generado por la DB al objeto
+        $this->id = self::$db->insert_id;
+
         return [
             'resultado' => $resultado,
-            'id' => self::$db->insert_id
+            'id' => $this->id
         ];
     }
 
@@ -145,6 +148,17 @@ class ActiveRecord {
     public static function where($columna, $valor) {
         $resultado = self::consultarSQL("SELECT * FROM " . static::$tabla . " WHERE {$columna} = '{$valor}'");
         return array_shift($resultado);
+    }
+
+    /**
+    * Consulta por columna específica y devuelve todos los resultados
+    */
+    public static function whereAll($filtros = []) {
+        $query = "SELECT * FROM " . static::$tabla . " WHERE 1=1 ";
+        foreach ($filtros as $campo => $valor) {
+            $query .= "AND {$campo} = '{$valor}' ";
+        }
+        return self::consultarSQL($query);
     }
 
     /**
@@ -216,7 +230,7 @@ class ActiveRecord {
         }
         return $sanitizado;
     }
-
+    
     /**
     * Sincroniza atributos del objeto con un array de datos
     */
