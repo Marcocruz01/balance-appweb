@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="/dist/img/logotipo.webp" />
     <title>Balance Pro | <?php echo $titulo;?> </title>
     <!-- Descripción SEO -->
     <meta name="description" content="Balance Pro es una aplicación web bancaria para registrar, monitorear y gestionar tus ingresos y gastos de manera fácil y segura.">
